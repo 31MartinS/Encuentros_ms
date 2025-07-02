@@ -1,0 +1,388 @@
+openapi: 3.0.0
+info:
+  title: API - Plataforma Encuentros
+  description: "Documentación de las APIs RESTful para la gestión de eventos, entradas, usuarios y validaciones en la plataforma Encuentros."
+  version: 1.0.0
+servers:
+- url: http://localhost:8000
+paths:
+  /login:
+    post:
+      summary: Iniciar sesión y obtener token JWT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login_body'
+        required: true
+      responses:
+        "200":
+          description: Login exitoso
+        "401":
+          description: Credenciales inválidas
+  /usuarios:
+    get:
+      summary: Obtener todos los usuarios
+      responses:
+        "200":
+          description: Lista de usuarios
+    post:
+      summary: Crear nuevo usuario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/usuarios_body'
+        required: true
+      responses:
+        "201":
+          description: Usuario creado
+  /usuarios/{id}:
+    get:
+      summary: Obtener usuario por ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Usuario encontrado
+        "404":
+          description: Usuario no encontrado
+    put:
+      summary: Actualizar usuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/usuarios_id_body'
+        required: true
+      responses:
+        "200":
+          description: Usuario actualizado
+    delete:
+      summary: Eliminar usuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Usuario eliminado
+  /eventos:
+    get:
+      summary: Listar todos los eventos
+      responses:
+        "200":
+          description: Lista de eventos
+    post:
+      summary: Crear evento
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/eventos_body'
+        required: true
+      responses:
+        "201":
+          description: Evento creado
+  /eventos/{id}:
+    put:
+      summary: Editar evento
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/eventos_id_body'
+        required: true
+      responses:
+        "200":
+          description: Evento actualizado
+    delete:
+      summary: Eliminar evento
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Evento eliminado
+  /localidades:
+    get:
+      summary: Listar zonas del estadio
+      responses:
+        "200":
+          description: Lista de localidades
+    post:
+      summary: Crear nueva localidad
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/localidades_body'
+        required: true
+      responses:
+        "201":
+          description: Localidad creada
+  /entradas:
+    get:
+      summary: Listar entradas
+      responses:
+        "200":
+          description: Entradas encontradas
+    post:
+      summary: Comprar entrada
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/entradas_body'
+        required: true
+      responses:
+        "201":
+          description: Entrada generada
+  /entradas/{id}:
+    put:
+      summary: Cambiar estado de entrada
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/entradas_id_body'
+        required: true
+      responses:
+        "200":
+          description: Estado actualizado
+  /reservas:
+    post:
+      summary: Reservar asiento temporalmente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/reservas_body'
+        required: true
+      responses:
+        "201":
+          description: Reserva creada
+  /reservas/{id}:
+    delete:
+      summary: Cancelar reserva
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Reserva eliminada
+  /validaciones:
+    get:
+      summary: Historial de validaciones
+      responses:
+        "200":
+          description: Historial obtenido
+    post:
+      summary: Validar código QR
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/validaciones_body'
+        required: true
+      responses:
+        "200":
+          description: QR validado
+  /notificaciones:
+    get:
+      summary: Listar notificaciones
+      responses:
+        "200":
+          description: Lista de notificaciones
+    post:
+      summary: Enviar notificación
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/notificaciones_body'
+        required: true
+      responses:
+        "200":
+          description: Notificación enviada
+  /historial:
+    get:
+      summary: Consultar eventos pasados
+      responses:
+        "200":
+          description: Historial de eventos
+  /roles:
+    get:
+      summary: Listar roles
+      responses:
+        "200":
+          description: Lista de roles
+    post:
+      summary: Crear rol
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/roles_body'
+        required: true
+      responses:
+        "201":
+          description: Rol creado
+  /asistencias:
+    get:
+      summary: Listar asistencias registradas
+      responses:
+        "200":
+          description: Lista de asistencias
+    post:
+      summary: Registrar asistencia
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/asistencias_body'
+        required: true
+      responses:
+        "201":
+          description: Asistencia registrada
+components:
+  schemas:
+    login_body:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    usuarios_body:
+      type: object
+      properties:
+        nombre:
+          type: string
+        correo:
+          type: string
+        rol:
+          type: string
+        password:
+          type: string
+    usuarios_id_body:
+      type: object
+      properties:
+        nombre:
+          type: string
+        correo:
+          type: string
+        rol:
+          type: string
+    eventos_body:
+      type: object
+      properties:
+        nombre:
+          type: string
+        fecha:
+          type: string
+        hora:
+          type: string
+        estado:
+          type: string
+    eventos_id_body:
+      type: object
+      properties:
+        nombre:
+          type: string
+        fecha:
+          type: string
+        hora:
+          type: string
+        estado:
+          type: string
+    localidades_body:
+      type: object
+      properties:
+        nombre:
+          type: string
+        eventoId:
+          type: integer
+    entradas_body:
+      type: object
+      properties:
+        eventoId:
+          type: integer
+        usuarioId:
+          type: integer
+        asiento:
+          type: string
+        precio:
+          type: number
+    entradas_id_body:
+      type: object
+      properties:
+        estado:
+          type: string
+    reservas_body:
+      type: object
+      properties:
+        eventoId:
+          type: integer
+        asiento:
+          type: string
+    validaciones_body:
+      type: object
+      properties:
+        codigoQR:
+          type: string
+        eventoId:
+          type: integer
+        puerta:
+          type: string
+    notificaciones_body:
+      type: object
+      properties:
+        mensaje:
+          type: string
+        destino:
+          type: string
+    roles_body:
+      type: object
+      properties:
+        nombre:
+          type: string
+    asistencias_body:
+      type: object
+      properties:
+        eventoId:
+          type: integer
+        usuarioId:
+          type: integer
+        hora:
+          type: string
