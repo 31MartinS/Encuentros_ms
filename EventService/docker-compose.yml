@@ -1,0 +1,11 @@
+services:
+  evento-service:
+    build: .
+    container_name: evento-service
+    ports:
+      - "3002:3002"
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    restart: unless-stopped

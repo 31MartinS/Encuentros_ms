@@ -4,7 +4,7 @@ info:
   description: "Documentación de las APIs RESTful para la gestión de eventos, entradas, usuarios y validaciones en la plataforma Encuentros."
   version: 1.0.0
 servers:
-- url: http://localhost:8000
+  - url: http://localhost:8000
 paths:
   /login:
     post:
@@ -13,7 +13,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/login_body'
+              $ref: "#/components/schemas/login_body"
         required: true
       responses:
         "200":
@@ -32,7 +32,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/usuarios_body'
+              $ref: "#/components/schemas/usuarios_body"
         required: true
       responses:
         "201":
@@ -41,11 +41,11 @@ paths:
     get:
       summary: Obtener usuario por ID
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Usuario encontrado
@@ -54,16 +54,16 @@ paths:
     put:
       summary: Actualizar usuario
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/usuarios_id_body'
+              $ref: "#/components/schemas/usuarios_id_body"
         required: true
       responses:
         "200":
@@ -71,11 +71,11 @@ paths:
     delete:
       summary: Eliminar usuario
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Usuario eliminado
@@ -91,7 +91,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/eventos_body'
+              $ref: "#/components/schemas/eventos_body"
         required: true
       responses:
         "201":
@@ -100,16 +100,16 @@ paths:
     put:
       summary: Editar evento
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/eventos_id_body'
+              $ref: "#/components/schemas/eventos_id_body"
         required: true
       responses:
         "200":
@@ -117,11 +117,11 @@ paths:
     delete:
       summary: Eliminar evento
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Evento eliminado
@@ -137,7 +137,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/localidades_body'
+              $ref: "#/components/schemas/localidades_body"
         required: true
       responses:
         "201":
@@ -154,7 +154,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/entradas_body'
+              $ref: "#/components/schemas/entradas_body"
         required: true
       responses:
         "201":
@@ -163,16 +163,16 @@ paths:
     put:
       summary: Cambiar estado de entrada
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/entradas_id_body'
+              $ref: "#/components/schemas/entradas_id_body"
         required: true
       responses:
         "200":
@@ -184,7 +184,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/reservas_body'
+              $ref: "#/components/schemas/reservas_body"
         required: true
       responses:
         "201":
@@ -193,11 +193,11 @@ paths:
     delete:
       summary: Cancelar reserva
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         "200":
           description: Reserva eliminada
@@ -213,7 +213,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/validaciones_body'
+              $ref: "#/components/schemas/validaciones_body"
         required: true
       responses:
         "200":
@@ -230,7 +230,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/notificaciones_body'
+              $ref: "#/components/schemas/notificaciones_body"
         required: true
       responses:
         "200":
@@ -253,7 +253,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/roles_body'
+              $ref: "#/components/schemas/roles_body"
         required: true
       responses:
         "201":
@@ -270,7 +270,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/asistencias_body'
+              $ref: "#/components/schemas/asistencias_body"
         required: true
       responses:
         "201":
