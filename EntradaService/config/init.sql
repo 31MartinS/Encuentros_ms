@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS entradas (
+  id SERIAL PRIMARY KEY,
+  evento_id VARCHAR(100) NOT NULL,
+  usuario_id VARCHAR(100) NOT NULL,
+  asiento VARCHAR(50) NOT NULL,
+  qr_code TEXT,
+  fecha_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
