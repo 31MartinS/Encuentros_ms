@@ -1,5 +1,5 @@
 import express from 'express';
-import { registrarAsistencia, obtenerAsistencia } from '../controllers/asistencia.controller';
+import { registrarAsistencia, obtenerAsistencia } from '../controllers/asistencia_controller';
 
 const router = express.Router();
 
