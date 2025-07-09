@@ -9,7 +9,7 @@ services:
       - cockroach
       - rabbitmq
     env_file:
-      - .env
+      - .env.docker
 
   cockroach:
     image: cockroachdb/cockroach:v23.1.11
@@ -19,6 +19,7 @@ services:
       - "8080:8080"
     volumes:
       - cockroach-data:/cockroach/cockroach-data
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
   rabbitmq:
     image: rabbitmq:3-management

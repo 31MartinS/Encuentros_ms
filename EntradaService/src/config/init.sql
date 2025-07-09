@@ -6,4 +6,3 @@ CREATE TABLE IF NOT EXISTS entradas (
   qr_code STRING,
   fecha_compra TIMESTAMP DEFAULT now()
 );
-ALTER
