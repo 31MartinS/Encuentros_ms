@@ -5,23 +5,27 @@ async function initDB() {
     // Crear tabla zonas
     await db.query(`
       CREATE TABLE IF NOT EXISTS zonas (
-        id SERIAL PRIMARY KEY,
+        id INT PRIMARY KEY DEFAULT unique_rowid(),
         nombre VARCHAR(100) NOT NULL
-      );d
+      );
     `);
 
-    await db.query(`    
+    // Evitar inserciones duplicadas
+    const { rows } = await db.query("SELECT COUNT(*) FROM zonas");
+    if (parseInt(rows[0].count) === 0) {
+      await db.query(`
         INSERT INTO zonas (nombre)
-            VALUES ('Palco'), ('Tribuna'), ('VIP');
-    `);
+        VALUES ('Palco'), ('Tribuna'), ('VIP');
+      `);
+    }
 
     // Crear tabla eventos
     await db.query(`
       CREATE TABLE IF NOT EXISTS eventos (
-        id SERIAL PRIMARY KEY,
+        id INT PRIMARY KEY DEFAULT unique_rowid(),
         nombre VARCHAR(100),
         descripcion TEXT,
-        fecha TIMESTAMP,
+        fecha TIMESTAMPTZ,
         zona_id INT REFERENCES zonas(id)
       );
     `);

@@ -1,5 +1,5 @@
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
+import { Pool } from "pg";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -9,7 +9,7 @@ export const pool = new Pool({
   user: process.env.PG_USER,
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE,
-  ssl: false // dejar false ya que estamos en modo inseguro
+  ssl: false,
 });
 
 export async function connectWithRetry(retries = 5, delay = 3000) {
@@ -23,5 +23,7 @@ export async function connectWithRetry(retries = 5, delay = 3000) {
       await new Promise((res) => setTimeout(res, delay));
     }
   }
-  throw new Error("❌ No se pudo conectar a la base de datos después de varios intentos.");
+  throw new Error(
+    "❌ No se pudo conectar a la base de datos después de varios intentos."
+  );
 }
