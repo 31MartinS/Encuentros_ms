@@ -3,27 +3,38 @@ import { createUser, updateUser, getUserByEmail, deleteUser, getUserById } from 
 import { AuthRequest } from '../middlewares/auth.middleware';
 import { generateToken } from '../utils/jwt';
 import bcrypt from 'bcrypt';
+import { getChannel } from '../config/rabbitmq';
 
 // Controlador para registrar un nuevo usuario
 export async function registerUser(req: Request, res: Response) {
   const { firstname, lastname, email, password } = req.body;
 
-  // Validación de campos obligatorios
   if (!firstname || !lastname || !email || !password) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
   }
 
   try {
-    // Se crea el usuario utilizando la capa de servicio
     await createUser({ firstname, lastname, email, password });
+
+    // 📨 Enviar mensaje a RabbitMQ
+    const channel = getChannel();
+    await channel.assertQueue('notificaciones', { durable: true });
+    await channel.sendToQueue(
+      'notificaciones',
+      Buffer.from(JSON.stringify({
+        tipo: 'nuevo_registro',
+        email,
+        nombre: firstname,
+        fecha: new Date().toISOString()
+      })),
+      { persistent: true }
+    );
+
     res.status(201).json({ message: 'Usuario registrado correctamente.' });
   } catch (error: unknown) {
-    // Manejo seguro de errores con validación del tipo
     if (error instanceof Error) {
       console.error('Error en registro:', error);
-
-      // Manejo específico para errores de duplicado (por ejemplo, correo ya registrado)
-      if ('code' in error && error.code === '23505') {
+      if ('code' in error && (error as any).code === '23505') {
         return res.status(409).json({ message: 'El correo ya está en uso.' });
       }
     } else {

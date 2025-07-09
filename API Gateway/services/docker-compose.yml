@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  asistencia-service:
+    build: .
+    container_name: asistencia-service
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3002
+
+      # Conexión a CockroachDB ya levantada
+      PG_HOST: cockroachdb-1
+      PG_PORT: 26257
+      PG_USER: root
+      PG_PASSWORD: 
+      PG_DATABASE: asistencia_service
+      PG_SSL: false
+      DATABASE_URL: postgresql://root@cockroachdb-1:26257/asistencia_service?sslmode=disable
+
+      # RabbitMQ ya levantado
+      RABBITMQ_HOST: rabbitmq-1
+      RABBITMQ_PORT: 5672
+
+      # Eureka ya levantado
+      EUREKA_HOST: eureka-1
+      EUREKA_PORT: 8761
+      EUREKA_APP_NAME: asistencia-service
+      EUREKA_INSTANCE_PORT: 3002
+      HOSTNAME: asistencia-service
+
+      # Seguridad
+      JWT_SECRET: miclaveultrasecreta
+
+    networks:
+      - default

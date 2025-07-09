@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  asistencia-service:
+    build: .
+    container_name: asistencia-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - cockroachdb
+      - rabbitmq
+      - eureka-server
+    environment:
+      - PORT=3002
+      - PG_HOST=cockroachdb
+      - PG_PORT=26257
+      - PG_USER=root
+      - PG_DATABASE=asistencia_service
+      - PG_SSL=false
+      - DATABASE_URL=postgresql://root@cockroachdb:26257/asistencia_service?sslmode=disable
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - EUREKA_HOST=eureka-server
+      - EUREKA_PORT=8761
+      - EUREKA_APP_NAME=asistencia-service
+      - EUREKA_INSTANCE_PORT=3002
+      - HOSTNAME=asistencia-service
+      - JWT_SECRET=miclaveultrasecreta
+    networks:
+      - encuentros-network
+
+  cockroachdb:
+    image: cockroachdb/cockroach:v22.2.4
+    command: start-single-node --insecure
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    networks:
+      - encuentros-network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - encuentros-network
+
+  eureka-server:
+    image: steeltoeoss/eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - encuentros-network
+
+networks:
+  encuentros-network:
+    driver: bridge
