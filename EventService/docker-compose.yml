@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   evento-service:
     build: .
@@ -8,30 +6,36 @@ services:
       - "3002:3002"
     env_file:
       - .env
-    volumes:
-      - .:/app
     depends_on:
       - cockroach
       - rabbitmq
-    restart: unless-stopped
+    networks:
+      - app-network
 
   cockroach:
     image: cockroachdb/cockroach:v23.1.11
     command: start-single-node --insecure
     container_name: cockroach
     ports:
-      - "26257:26257"
-      - "8080:8080"
+      - "26259:26259"
+      - "8090:8090"
     volumes:
       - cockroach-data:/cockroach/cockroach-data
+    networks:
+      - app-network
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq
+    container_name: rabbitmqEventos
     ports:
-      - "5672:5672"     # Para apps
-      - "15672:15672"   # Web UI
-    restart: unless-stopped
+      - "5673:5673"
+      - "15673:15673"
+    networks:
+      - app-network
 
 volumes:
   cockroach-data:
+
+networks:
+  app-network:
+    driver: bridge

@@ -2,16 +2,18 @@ const db = require("./db");
 
 async function initDB() {
   try {
-    // Crear tabla zonas
+    // Crear la base de datos si no existe
+    await db.query("CREATE DATABASE IF NOT EXISTS eventosDB;");
+    await db.query("USE eventosDB;");
+
     await db.query(`
       CREATE TABLE IF NOT EXISTS zonas (
-        id INT PRIMARY KEY DEFAULT unique_rowid(),
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         nombre VARCHAR(100) NOT NULL
       );
     `);
 
-    // Evitar inserciones duplicadas
-    const { rows } = await db.query("SELECT COUNT(*) FROM zonas");
+    const { rows } = await db.query("SELECT COUNT(*) as count FROM zonas");
     if (parseInt(rows[0].count) === 0) {
       await db.query(`
         INSERT INTO zonas (nombre)
@@ -19,20 +21,20 @@ async function initDB() {
       `);
     }
 
-    // Crear tabla eventos
     await db.query(`
       CREATE TABLE IF NOT EXISTS eventos (
-        id INT PRIMARY KEY DEFAULT unique_rowid(),
-        nombre VARCHAR(100),
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        nombre VARCHAR(100) NOT NULL,
         descripcion TEXT,
-        fecha TIMESTAMPTZ,
-        zona_id INT REFERENCES zonas(id)
+        fecha TIMESTAMP,  // Sin zona horaria
+        zona_id UUID REFERENCES zonas(id)
       );
     `);
 
     console.log("🟢 Base de datos inicializada correctamente");
   } catch (error) {
     console.error("🔴 Error inicializando la base de datos:", error.message);
+    process.exit(1);
   }
 }
 
