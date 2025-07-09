@@ -1,5 +1,3 @@
-// src/utils/rabbitSender.js
-
 import amqp from 'amqplib';
 
 let channel = null;
@@ -7,7 +5,11 @@ let channel = null;
 export async function connectToRabbit() {
   if (channel) return channel;
 
-  const connection = await amqp.connect(process.env.RABBITMQ_URL || 'amqp://localhost');
+  const host = process.env.RABBITMQ_HOST || 'localhost';
+  const port = process.env.RABBITMQ_PORT || '5672';
+  const url = `amqp://${host}:${port}`;
+
+  const connection = await amqp.connect(url);
   channel = await connection.createChannel();
   await channel.assertQueue('notificaciones', { durable: false });
 

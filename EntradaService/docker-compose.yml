@@ -6,21 +6,25 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
+      - cockroach
+      - rabbitmq
     env_file:
       - .env
 
-  postgres:
-    image: postgres:14
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: espe
-      POSTGRES_DB: entradas
+  cockroach:
+    image: cockroachdb/cockroach:v23.1.11
+    command: start-single-node --insecure
     ports:
-      - "5432:5432"
+      - "26257:26257"
+      - "8080:8080"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - cockroach-data:/cockroach/cockroach-data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 volumes:
-  pgdata:
+  cockroach-data:
