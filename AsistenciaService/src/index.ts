@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import asistenciaRoutes from './routes/asistencia.routes';
+import asistenciaRoutes from './routes/asistencia_routes';
 import './config/db';
 import './config/rabbitmq';
 
