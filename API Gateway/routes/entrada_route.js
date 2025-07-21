@@ -4,13 +4,10 @@ const router = express.Router();
 const { entradaService } = require("../config/services");
 
 router.use(
-  "/entradas",
+  "/",
   createProxyMiddleware({
     target: entradaService,
     changeOrigin: true,
-    pathRewrite: {
-      "^/api/entradas": "",
-    },
   })
 );
 

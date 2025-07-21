@@ -4,13 +4,10 @@ const router = express.Router();
 const { notificacionService } = require("../config/services");
 
 router.use(
-  "/notificaciones",
+  "/",
   createProxyMiddleware({
     target: notificacionService,
     changeOrigin: true,
-    pathRewrite: {
-      "^/api/notificaciones": "",
-    },
   })
 );
 

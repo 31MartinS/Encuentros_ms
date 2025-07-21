@@ -13,8 +13,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Rutas
-app.use('/api', userRoutes);
+app.use('/api/usuarios', userRoutes);
 
 app.get('/', (_req, res) => {
   res.send('Usuario Service funcionando 🟢');

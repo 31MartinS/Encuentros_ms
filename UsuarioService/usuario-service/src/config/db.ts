@@ -1,17 +1,35 @@
-import { Pool } from 'pg'; // Importa el pool de conexiones de PostgreSQL
-import dotenv from 'dotenv'; // Carga variables de entorno desde un archivo .env
+import { Pool } from 'pg';
+import dotenv from 'dotenv';
 
-dotenv.config(); // Inicializa dotenv para acceder a variables de entorno
+dotenv.config();
 
-// Configuración del pool de conexiones a la base de datos
 export const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // URL de conexión definida en .env
-  ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: false } // En producción se habilita SSL sin verificación estricta
-    : false // En desarrollo se desactiva SSL
+  connectionString: process.env.DATABASE_URL,
+  ssl: false, 
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000
 });
 
-// Verifica la conexión al iniciar el servicio
-pool.connect()
-  .then(() => console.log('🟢 Conectado a CockroachDB'))
-  .catch((err) => console.error('🔴 Error al conectar a la base de datos:', err));
+pool.on('connect', () => {
+  console.log('🟢 Conexión establecida con CockroachDB');
+});
+
+pool.on('error', (err) => {
+  console.error('🔴 Error en el pool de conexiones:', err);
+});
+
+// Función para probar la conexión al iniciar
+export async function testConnection() {
+  try {
+    const client = await pool.connect();
+    await client.query('SELECT 1');
+    client.release();
+    console.log('✅ Conexión a la base de datos verificada');
+  } catch (err) {
+    console.error('❌ Error al conectar a la base de datos:', err);
+    throw err;
+  }
+}
+
+testConnection(); 

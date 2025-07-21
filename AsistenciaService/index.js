@@ -1,11 +1,11 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import { connectToDatabase } from './database.js';
-import { connectToRabbitMQ } from './rabbitmq.js';
-import registerWithEureka from './eureka.js';
+import express from "express";
+import dotenv from "dotenv";
+import { connectToDatabase } from "./database.js";
+import { connectToRabbitMQ } from "./rabbitmq.js";
+import registerWithEureka from "./eureka.js";
 
-import validationRoutes from './routes/validation.routes.js';
-import asistenciaRoutes from './routes/asistencia.routes.js';
+import validationRoutes from "./routes/validation.routes.js";
+import asistenciaRoutes from "./routes/asistencia.routes.js";
 
 dotenv.config();
 
@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 3002;
 app.use(express.json());
 
 // Rutas
-app.use('/validaciones', validationRoutes);
-app.use('/asistencias', asistenciaRoutes);
+app.use("/api/validaciones", validationRoutes);
+app.use("/api/asistencias", asistenciaRoutes);
 
 // Inicialización
 const startService = async () => {
@@ -30,7 +30,7 @@ const startService = async () => {
       console.log(`🚀 AsistenciaService ejecutándose en el puerto ${PORT}`);
     });
   } catch (error) {
-    console.error('❌ Error al iniciar el servicio:', error);
+    console.error("❌ Error al iniciar el servicio:", error);
     process.exit(1);
   }
 };

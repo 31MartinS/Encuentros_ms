@@ -13,7 +13,7 @@ export async function getEventos(_req: Request, res: Response) {
   }
 }
 
-export async function postEvento(req: Request, res: Response) {
+export async function postEventos(req: Request, res: Response) {
   const { nombre, descripcion, fecha, zona_id } = req.body;
 
   const { valido, errores } = validarEvento(req.body);
